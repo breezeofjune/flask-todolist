@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% from "bootstrap/pagination.html" import render_pagination %}
+
+{% block content %}
+	<div class="container">
+	
+		{% if get_flashed_messages()|length < 1 %}
+			<h3>欢迎使用待办提醒</h3>
+		{% else %}
+			{% for message in get_flashed_messages() %}
+				<h3> {{ message }}</h3>
+			{% endfor %}
+		{% endif %}			
+	
+	</div>
+	
+{% endblock content %}
+
+{% block scripts %}
+	{{ super() }}
+	<script type="text/javascript">
+		// $(function(){
+		// 	alert("jQuery is worked.")
+		// });
+		
+		$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+
+		// 增加一个待办事项
+		$("#new_submit").bind('click', function() {
+			var content = $('#newtodo').val();
+			$.getJSON($SCRIPT_ROOT + '/edit', {'content': content}, 
+					function(){
+						window.location.href = $SCRIPT_ROOT + '/my_todolist';
+					});
+		});
+		
+		$(".list-group .deletebutton").bind('click', function(){
+			tag = $(this).parents('.list-group-item').children('.todo_content:eq(0)');
+			
+			if(tag.children('input')[0]){
+				todoid = tag.children("input").attr('id');
+			} else {
+				todoid = parseInt(tag.attr('id'));
+			}
+
+			$.getJSON($SCRIPT_ROOT + '/delete_todo', {'id': todoid}, function(){
+					window.location.href = $SCRIPT_ROOT + '/my_todolist';
+				});
+		});
+
+		$(".list-group .editbutton").bind('click', function(){
+			selecttodo = $(this).parents('span:eq(1)').children('.todo_content:eq(0)');
+			selectcontent = selecttodo.text();
+			id = parseInt(selecttodo.attr("id"));
+
+			selecttodo.replaceWith('<span class="todo_content">\
+									<input type="text" class="todo_content form-control" id="'+id+'" value="'+
+									selectcontent+'">\
+									<button class="btn btn-default glyphicon glyphicon-refresh editsubmit" type="button">update</button>\
+									</span>')
+
+		});
+
+		// bind() 时，选择器匹配的元素会附加一个事件处理函数，而以后再添加的元素则不会有。
+		$("body").on('click', '.editsubmit', function(){
+
+			editinput = $(this).prev(".todo_content");
+			content = editinput.val();
+			id = editinput.attr('id');
+
+			$(this).next().remove();
+
+			$.getJSON($SCRIPT_ROOT + '/edit', {'id':id, 'content':content},function(){
+				editinput.parent("span").replaceWith('<span id="'+id+'" class="float_left todo_content">'+content+'</span>'
+				);
+			});
+		});
+
+		$(".list-group .donecheckbox").change(function(){
+
+			contenttag = $(this).parents('.list-group-item').children('.todo_content:eq(0)');
+				
+			if(contenttag.children('input')[0]){
+				// 如果正在edit，check框不起作用
+				contenttag.append('<span class="label label-warning">请先完成edit！</span>');
+				$(this).attr('checked', false);
+			} else {
+				todoid = parseInt(contenttag.attr('id'));
+
+				if($(this).prop("checked")){
+					$.getJSON($SCRIPT_ROOT + '/markisdone', {'id':todoid, 'isdone':1},function(){
+					contenttag.attr('style','text-decoration:line-through');
+					});
+				} else {
+					$.getJSON($SCRIPT_ROOT + '/markisdone', {'id':todoid, 'isdone':0},function(){
+					contenttag.removeAttr('style');
+					});
+				}				
+			}			
+			// $.post($SCRIPT_ROOT + '/markisdone', {'id': todoid});
+		});
+
+	</script>
+	
+{% endblock scripts %}

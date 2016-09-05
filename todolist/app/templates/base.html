@@ -1,0 +1,30 @@
+{% extends "bootstrap/base.html" %}
+
+{% block head %}
+	{{ super() }}
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='site.css') }}">
+	<title>{% block title %}{{ title }}{% endblock title %}</title>
+{% endblock head %}
+
+{% block navbar %}
+	{% include "includes/_navbar.html" %}	
+{% endblock navbar %}
+<div class="navbar navbar-fixed-top">
+	<!-- ... -->
+</div>
+
+{% block body %}
+	{{ super() }}
+	{% block footer %}
+	<footer>
+		<nav class="navbar navbar-fixed-bottom">
+			<div class="container text-center ">
+				<p>Copyright 2016 by <a href="localhost:5500">Zhouxf</a></p>
+			</div>
+		</nav>
+	</footer footer>
+{% endblock %}
+{% endblock body %}
+

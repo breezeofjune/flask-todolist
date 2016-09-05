@@ -1,0 +1,37 @@
+.footer_div{
+	text-align: center;
+}
+
+.float_left{
+	float: left;
+}
+
+.float_right{
+	float: right;
+}
+
+.container #todo_description div{
+	margin: 10px 0px
+}
+
+.container .todo_content{
+	display: block;
+	float:left;
+	font: 16px/20px Microsoft YaHei;
+	width: 75%;
+}
+
+.container .todo_content input{
+	float: left;
+	width:75%;
+}
+
+
+
+.clearfix{
+	clear:both;
+}
+
+.container .pull-right div{
+	margin: 5px
+}
