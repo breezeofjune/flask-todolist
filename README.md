@@ -9,6 +9,8 @@ It's a tiny flask todolist website, and used to new, edit, delete and to remark 
   Then you can install 3rd packages by pip -r requirements.txt
 ### Databse
   It uses mysql, but you don't  necessarily use the only one. Change SQLALCHEMY_DATABASE_URI in config.py to cater your envirment.
+### Language
+  Some is Chinese, and not use babel to suport  l10n. It's a todo item.
   
 ### deployment
   * todolist.py
