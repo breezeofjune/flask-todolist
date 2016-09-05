@@ -26,20 +26,20 @@ It's a tiny flask todolist website, and used to new, edit, delete and to remark 
   If you wantna add more apps such as reminding and email support , you can do by Blueprint as following:
     1. add a python package in app directory, for example newapp, and edit __init__.py in the new app:  
     
-      `
+      <pre<code>
       from flask import Blueprint
       newapp = Blueprint('newapp', __name__)
-      `
+      </code></pre>              
 
     2. in views.py of new app, add import: 
     
-      `
+      <pre<code>
       from . import newapp
-      `
+      </code></pre>      
       
     3. in app directory, edit create_app in __init__.py to register new app:  
     
-      `
+      <pre<code>
       from .newapp import newapp as newapp_blueprint
       app.register_blueprint(newapp_blueprint, url_prefix='/xxx')
-      `
+      </code></pre>      
